@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/plbang/liri-node-app/issues"
   },
-  "homepage": "https://github.com/plbang/liri-node-app#readme"
+  "homepage": "https://github.com/plbang/liri-node-app#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0"
+  }
 }
