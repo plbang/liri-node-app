@@ -1,4 +1,4 @@
-require("dotenv").config();
+var dotenv = require("dotenv").config();
 var keys = require("./keys.js");
 var request = require("request");
 var fs = require("fs");
@@ -10,7 +10,7 @@ var userCommand = process.argv[2];
 // movie-this
 // do-what-it-says
 
-var userSearch = process.argv[3];
+var userSearch = process.argv.slice(3).join(" ");
 // artist
 // song
 // movie
@@ -33,6 +33,23 @@ switch (userCommand) {
     break;
 }
 
+function concert(userSearch) {
+	var queryURL =
+	  "https://rest.bandsintown.com/artists/" +
+	  userSearch +
+	  "/events?app_id=codingbootcamp";
+
+	request(queryURL, function(error, response, body) {
+	var music = JSON.parse(body, null, 2);
+
+	console.log("Venue: " + music[0].venue.name);
+	console.log("Location: " + music[0].venue.city + ", " + music[0].venue.region)
+	
+	});
+
+  };
+  
+
 function spotify(userSearch) {
   var spotify = new Spotify(keys.spotify);
   if (!userSearch) {
@@ -40,7 +57,7 @@ function spotify(userSearch) {
   }
   spotify.search({ type: "track", query: userSearch }, function(err, data) {
     if (err) {
-      console.log("Error occurred: " + err);
+      console.log(err);
       return;
     }
 
@@ -50,18 +67,7 @@ function spotify(userSearch) {
     console.log("Preview Link: " + songInfo[0].preview_url);
     console.log("Album: " + songInfo[0].album.name);
   });
-}
-
-function concert(userSearch) {
-  var queryURL =
-    "https://rest.bandsintown.com/artists/" +
-    userSearch +
-    "/events?app_id=codingbootcamp";
-}
-
-
-
-
+};
 
 
 function movie(userSearch) {
@@ -73,15 +79,22 @@ function movie(userSearch) {
     if (!userSearch) {
       userSearch = "Mr. Nobody";
     }
-    if (!error && response.statusCode === 200) {		
-		console.log("Title: " + JSON.parse(body).Title);
-		console.log("Release Year: " + JSON.parse(body).Year);
-		console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
-		console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
-		console.log("Country: " + JSON.parse(body).Country);
-		console.log("Language: " + JSON.parse(body).Language);
-		console.log("Plot: " + JSON.parse(body).Plot);
-		console.log("Actors: " + JSON.parse(body).Actors);
+    if (!error && response.statusCode === 200) {
+		
+		var omdb = JSON.parse(body, null, 2);
+		
+		console.log("Title: " + omdb.Title);
+		console.log("Release Year: " + omdb.Year);
+		console.log("IMDB Rating: " + omdb.imdbRating);
+		console.log("Rotten Tomatoes Rating: " + omdb.Ratings[1].Value);
+		console.log("Country: " + omdb.Country);
+		console.log("Language: " + omdb.Language);
+		console.log("Plot: " + omdb.Plot);
+		console.log("Actors: " + omdb.Actors);
     }
   });
+};
+
+function doit () {
+
 }
