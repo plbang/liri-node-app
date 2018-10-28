@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/plbang/liri-node-app#readme",
   "dependencies": {
+    "bandsintown": "^1.0.1",
+    "bit_js": "^3.0.0",
     "dotenv": "^6.1.0",
     "node-spotify-api": "^1.0.7"
   }
